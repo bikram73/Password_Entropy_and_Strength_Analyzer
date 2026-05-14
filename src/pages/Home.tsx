@@ -9,14 +9,49 @@ import { SuggestionsPanel } from '../components/SuggestionsPanel'
 import { EntropyGraph } from '../components/EntropyGraph'
 import { analyzePassword } from '../utils/passwordAnalyzer'
 
-const subtitleText = 'Check how secure your password really is.'
+const heroMessages = [
+  'Check how secure your password really is in seconds, with live entropy scoring and crack-time estimates.',
+  'See exactly how uppercase letters, numbers, symbols, and length change your password strength in real time.',
+  'Spot weak patterns early, improve your password instantly, and aim for God Level protection.',
+  'Built for fast, clear security feedback with animated visuals, smart suggestions, and cyber-style depth.',
+]
 
 export const Home = () => {
   const [password, setPassword] = useState('')
+  const [heroMessageIndex, setHeroMessageIndex] = useState(0)
+  const [heroText, setHeroText] = useState('')
+  const [isDeleting, setIsDeleting] = useState(false)
   const titleRef = useRef<HTMLHeadingElement>(null)
   const particlesRef = useRef<HTMLDivElement>(null)
 
   const analysis = useMemo(() => analyzePassword(password), [password])
+
+  useEffect(() => {
+    const currentMessage = heroMessages[heroMessageIndex]
+    const typingSpeed = isDeleting ? 28 : 40
+    const pauseDelay = 1400
+
+    if (!isDeleting && heroText === currentMessage) {
+      const pauseTimer = window.setTimeout(() => setIsDeleting(true), pauseDelay)
+      return () => window.clearTimeout(pauseTimer)
+    }
+
+    if (isDeleting && heroText === '') {
+      setIsDeleting(false)
+      setHeroMessageIndex((current) => (current + 1) % heroMessages.length)
+      return undefined
+    }
+
+    const timer = window.setTimeout(() => {
+      if (isDeleting) {
+        setHeroText(currentMessage.slice(0, Math.max(0, heroText.length - 1)))
+      } else {
+        setHeroText(currentMessage.slice(0, heroText.length + 1))
+      }
+    }, typingSpeed)
+
+    return () => window.clearTimeout(timer)
+  }, [heroMessageIndex, heroText, isDeleting])
 
   useEffect(() => {
     if (titleRef.current) {
@@ -101,7 +136,18 @@ export const Home = () => {
           <h1 ref={titleRef} className="font-heading text-4xl leading-tight text-white md:text-6xl">
             Password Entropy and Strength Analyzer
           </h1>
-          <p className="typewriter mt-3 max-w-2xl text-sm text-slate-300 md:text-lg">{subtitleText}</p>
+          <motion.p
+            key={heroMessageIndex}
+            className="hero-typing mt-3 max-w-3xl text-sm leading-7 text-slate-300 md:text-lg"
+            initial={{ opacity: 0, y: 8 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.35 }}
+          >
+            <span>{heroText}</span>
+            <span className="typing-caret" aria-hidden="true">
+              |
+            </span>
+          </motion.p>
         </header>
 
         <section className="grid gap-5">
