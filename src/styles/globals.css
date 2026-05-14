@@ -247,6 +247,199 @@ body {
   font-size: 0.75rem;
 }
 
+.loading-shell {
+  position: relative;
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  padding: 1rem;
+  background: linear-gradient(135deg, #040713, #0b1020, #111827);
+}
+
+.loading-grid {
+  position: absolute;
+  inset: 0;
+  opacity: 0.35;
+  background-image:
+    linear-gradient(rgba(0, 245, 255, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 92, 246, 0.12) 1px, transparent 1px);
+  background-size: 44px 44px;
+  animation: grid-drift 18s linear infinite;
+}
+
+.loading-card {
+  position: relative;
+  z-index: 1;
+  width: min(640px, 100%);
+  border-radius: 1.25rem;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(2, 6, 23, 0.72);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 0 18px rgba(0, 245, 255, 0.2), 0 0 36px rgba(139, 92, 246, 0.12);
+  padding: 1.4rem;
+}
+
+.loading-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.loading-orb {
+  width: 66px;
+  height: 66px;
+  border-radius: 9999px;
+  margin-bottom: 0.9rem;
+  border: 2px solid rgba(0, 245, 255, 0.16);
+  border-top-color: #00f5ff;
+  box-shadow: 0 0 14px rgba(0, 245, 255, 0.45);
+}
+
+.loading-modules {
+  margin-top: 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem;
+}
+
+.loading-module-chip {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(15, 23, 42, 0.62);
+  color: #cbd5e1;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  padding: 0.45rem 0.7rem;
+  text-transform: uppercase;
+  box-shadow: 0 0 10px rgba(0, 245, 255, 0.1);
+}
+
+.loading-stream-panel {
+  margin-top: 1rem;
+  border-radius: 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(2, 6, 23, 0.46);
+  padding: 0.95rem;
+}
+
+.loading-stream-label {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #67e8f9;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.loading-streams {
+  margin-top: 0.8rem;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.loading-stream-row {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  border-radius: 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(15, 23, 42, 0.52);
+  padding: 0.65rem 0.8rem;
+  font-family: 'JetBrains Mono', monospace;
+  color: #cbd5e1;
+}
+
+.loading-stream-row.active {
+  border-color: rgba(0, 245, 255, 0.45);
+  box-shadow: 0 0 14px rgba(0, 245, 255, 0.18);
+}
+
+.loading-stream-index {
+  min-width: 2rem;
+  color: #67e8f9;
+  letter-spacing: 0.18em;
+}
+
+.loading-stream-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.loading-stream-hint {
+  margin: 0.8rem 0 0;
+  color: #94a3b8;
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.loading-stream-active {
+  margin: 0.35rem 0 0;
+  color: #e2e8f0;
+  font-size: 0.82rem;
+}
+
+.loading-stream-active span {
+  color: #67e8f9;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.loading-kicker {
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #67e8f9;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.loading-title {
+  margin: 0.45rem 0 0;
+  color: #fff;
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  line-height: 1.12;
+}
+
+.loading-subtitle {
+  margin: 0.6rem 0 0;
+  color: #9fb2cc;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.loading-progress-wrap {
+  margin-top: 1rem;
+  width: 100%;
+  height: 12px;
+  border-radius: 9999px;
+  background: rgba(15, 23, 42, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  overflow: hidden;
+}
+
+.loading-progress-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #00f5ff, #8b5cf6);
+  box-shadow: 0 0 12px rgba(0, 245, 255, 0.4);
+}
+
+.loading-foot {
+  margin-top: 0.55rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #94a3b8;
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
 @keyframes grid-drift {
   from {
     transform: translateY(0);
@@ -310,5 +503,26 @@ body {
 
   .binary-char {
     font-size: 9px;
+  }
+
+  .loading-card {
+    padding: 1rem;
+  }
+
+  .loading-head {
+    flex-direction: column;
+  }
+
+  .loading-orb {
+    width: 56px;
+    height: 56px;
+  }
+
+  .loading-stream-row {
+    gap: 0.55rem;
+  }
+
+  .loading-stream-text {
+    font-size: 0.82rem;
   }
 }

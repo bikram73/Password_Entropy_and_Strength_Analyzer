@@ -144,7 +144,10 @@ export const PasswordInsightCharts = ({ analysis }: PasswordInsightChartsProps) 
                   ))}
                 </Pie>
                 <Tooltip
-                  formatter={(value: number) => [`${value} checks`, 'Count']}
+                  formatter={(value) => {
+                    const numeric = typeof value === 'number' ? value : Number(value ?? 0)
+                    return [`${numeric} checks`, 'Count']
+                  }}
                   contentStyle={{
                     background: '#0B1226',
                     border: '1px solid rgba(0,245,255,0.35)',
