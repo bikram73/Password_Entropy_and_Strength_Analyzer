@@ -45,7 +45,7 @@ export const EntropyCard = ({ entropy, poolSize, length, score }: EntropyCardPro
 
   return (
     <motion.section
-      className="glass-card p-5 md:p-7"
+      className="glass-card p-4 sm:p-5 md:p-7"
       initial={{ opacity: 0, y: 22 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.1 }}

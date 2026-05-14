@@ -26,7 +26,7 @@ export const PasswordInput = ({ value, onChange }: PasswordInputProps) => {
 
   return (
     <motion.section
-      className="glass-card p-5 md:p-7"
+      className="glass-card p-4 sm:p-5 md:p-7"
       initial={{ opacity: 0, y: 18 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45 }}
@@ -55,15 +55,15 @@ export const PasswordInput = ({ value, onChange }: PasswordInputProps) => {
           value={value}
           onChange={(event) => onChange(event.target.value)}
           placeholder="Type your password here..."
-          className="password-field focus-ring w-full rounded-xl border border-white/15 bg-slate-950/70 py-4 pl-12 pr-36 text-base text-white outline-none md:text-lg"
+          className="password-field focus-ring w-full rounded-xl border border-white/15 bg-slate-950/70 py-4 pl-12 pr-28 text-base text-white outline-none sm:pr-32 md:pr-36 md:text-lg"
         />
 
-        <div className="absolute inset-y-0 right-2 flex items-center gap-1.5 sm:gap-2">
+        <div className="absolute inset-y-0 right-1 flex items-center gap-1 sm:right-2 sm:gap-1.5 md:gap-2">
           <button
             type="button"
             aria-label={visible ? 'Hide password' : 'Show password'}
             onClick={() => setVisible((prev) => !prev)}
-            className="icon-btn"
+            className="icon-btn scale-90 sm:scale-100"
           >
             {visible ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
           </button>
@@ -72,7 +72,7 @@ export const PasswordInput = ({ value, onChange }: PasswordInputProps) => {
             type="button"
             aria-label="Copy password"
             onClick={copyPassword}
-            className="icon-btn"
+            className="icon-btn scale-90 sm:scale-100"
           >
             <Copy className="h-4 w-4" />
           </button>
@@ -81,7 +81,7 @@ export const PasswordInput = ({ value, onChange }: PasswordInputProps) => {
             type="button"
             aria-label="Clear password"
             onClick={() => onChange('')}
-            className="icon-btn"
+            className="icon-btn scale-90 sm:scale-100"
           >
             <RefreshCw className="h-4 w-4" />
           </button>

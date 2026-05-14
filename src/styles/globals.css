@@ -138,13 +138,27 @@ body {
 }
 
 .entropy-ring {
-  width: 132px;
-  height: 132px;
+  width: 116px;
+  height: 116px;
   border-radius: 9999px;
   padding: 8px;
   display: grid;
   place-items: center;
   box-shadow: 0 0 20px rgba(0, 245, 255, 0.25);
+}
+
+@media (min-width: 640px) {
+  .entropy-ring {
+    width: 132px;
+    height: 132px;
+  }
+}
+
+@media (min-width: 1024px) {
+  .entropy-ring {
+    width: 148px;
+    height: 148px;
+  }
 }
 
 .strength-fill {
@@ -186,7 +200,7 @@ body {
 .stat-tile {
   border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 0.75rem;
-  padding: 0.7rem;
+  padding: 0.85rem;
   background: rgba(2, 6, 23, 0.5);
 }
 

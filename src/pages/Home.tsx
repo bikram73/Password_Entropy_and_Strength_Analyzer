@@ -90,7 +90,7 @@ export const Home = () => {
   }, [])
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-cyber-gradient px-4 pb-12 pt-8 text-white md:px-8 lg:px-12">
+    <main className="relative min-h-screen overflow-hidden bg-cyber-gradient px-3 pb-10 pt-6 text-white sm:px-5 sm:pt-8 md:px-8 lg:px-10 xl:px-14">
       <div className="bg-grid" aria-hidden="true" />
 
       <div className="binary-rain" aria-hidden="true">
@@ -123,8 +123,8 @@ export const Home = () => {
         ))}
       </div>
 
-      <div className="mx-auto w-full max-w-7xl">
-        <header className="relative mb-8 md:mb-10">
+      <div className="mx-auto w-full max-w-[1600px]">
+        <header className="relative mb-7 max-w-4xl md:mb-10">
           <motion.p
             className="font-mono text-xs uppercase tracking-[0.24em] text-cyan-300"
             initial={{ opacity: 0, y: 10 }}
@@ -133,12 +133,15 @@ export const Home = () => {
           >
             SecurePass AI • Entropy Dashboard
           </motion.p>
-          <h1 ref={titleRef} className="font-heading text-4xl leading-tight text-white md:text-6xl">
+          <h1
+            ref={titleRef}
+            className="font-heading text-[clamp(2rem,5vw,4.25rem)] leading-[1.05] text-white"
+          >
             Password Entropy and Strength Analyzer
           </h1>
           <motion.p
             key={heroMessageIndex}
-            className="hero-typing mt-3 max-w-3xl text-sm leading-7 text-slate-300 md:text-lg"
+            className="hero-typing mt-3 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base md:max-w-3xl md:text-lg"
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.35 }}
@@ -150,11 +153,11 @@ export const Home = () => {
           </motion.p>
         </header>
 
-        <section className="grid gap-5">
+        <section className="grid gap-4 sm:gap-5">
           <PasswordInput value={password} onChange={setPassword} />
           <StrengthMeter score={analysis.score} tier={analysis.tier} />
 
-          <div className="grid gap-5 lg:grid-cols-2">
+          <div className="grid gap-4 sm:gap-5 lg:grid-cols-2">
             <EntropyCard
               entropy={analysis.entropy}
               poolSize={analysis.poolSize}
