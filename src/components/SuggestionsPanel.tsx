@@ -28,11 +28,14 @@ export const SuggestionsPanel = ({ analysis }: SuggestionsPanelProps) => (
     <div className="mt-4 grid gap-4 lg:grid-cols-2">
       <div>
         <h3 className="mb-2 text-sm uppercase tracking-[0.17em] text-slate-300">Checklist</h3>
-        <ul className="space-y-2 text-sm">
+        <ul className="space-y-2.5 text-sm">
           {checklistMap.map((item) => {
             const ok = analysis.checks[item.key]
             return (
-              <li key={item.key} className="flex items-center gap-2 rounded-lg border border-white/10 bg-slate-900/45 p-2">
+              <li
+                key={item.key}
+                className="flex items-center gap-2 rounded-lg border border-white/10 bg-slate-900/45 px-4 py-3"
+              >
                 {ok ? (
                   <CheckCircle2 className="h-4 w-4 text-emerald-400" aria-hidden="true" />
                 ) : (
@@ -42,7 +45,7 @@ export const SuggestionsPanel = ({ analysis }: SuggestionsPanelProps) => (
               </li>
             )
           })}
-          <li className="flex items-center gap-2 rounded-lg border border-white/10 bg-slate-900/45 p-2">
+          <li className="flex items-center gap-2 rounded-lg border border-white/10 bg-slate-900/45 px-4 py-3">
             {analysis.checks.hasSequential ? (
               <XCircle className="h-4 w-4 text-rose-400" aria-hidden="true" />
             ) : (
@@ -52,7 +55,7 @@ export const SuggestionsPanel = ({ analysis }: SuggestionsPanelProps) => (
               Avoids sequential patterns
             </span>
           </li>
-          <li className="flex items-center gap-2 rounded-lg border border-white/10 bg-slate-900/45 p-2">
+          <li className="flex items-center gap-2 rounded-lg border border-white/10 bg-slate-900/45 px-4 py-3">
             {analysis.checks.hasRepeating ? (
               <XCircle className="h-4 w-4 text-rose-400" aria-hidden="true" />
             ) : (
@@ -84,7 +87,7 @@ export const SuggestionsPanel = ({ analysis }: SuggestionsPanelProps) => (
         <h3 className="mb-2 mt-4 text-sm uppercase tracking-[0.17em] text-slate-300">AI-style Guidance</h3>
         <ul className="space-y-2 text-sm text-cyan-100">
           {analysis.aiSuggestions.map((tip) => (
-            <li key={tip} className="rounded-lg border border-cyan-300/25 bg-cyan-500/10 p-2">
+            <li key={tip} className="rounded-lg border border-cyan-300/25 bg-cyan-500/10 px-4 py-3">
               {tip}
             </li>
           ))}

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import { Info } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 type EntropyCardProps = {
@@ -40,6 +41,7 @@ export const EntropyCard = ({ entropy, poolSize, length, score }: EntropyCardPro
   const entropyAnimated = useAnimatedNumber(entropy)
   const poolAnimated = useAnimatedNumber(poolSize)
   const lengthAnimated = useAnimatedNumber(length)
+  const [showExplanation, setShowExplanation] = useState(false)
 
   return (
     <motion.section
@@ -49,9 +51,36 @@ export const EntropyCard = ({ entropy, poolSize, length, score }: EntropyCardPro
       transition={{ duration: 0.5, delay: 0.1 }}
       aria-labelledby="entropy-title"
     >
-      <h2 id="entropy-title" className="text-lg font-semibold text-cyan-200 md:text-xl">
-        Entropy Analysis
-      </h2>
+      <div className="flex items-center justify-between gap-3">
+        <h2 id="entropy-title" className="text-lg font-semibold text-cyan-200 md:text-xl">
+          Entropy Analysis
+        </h2>
+        <button
+          type="button"
+          className="icon-btn"
+          onClick={() => setShowExplanation((prev) => !prev)}
+          aria-expanded={showExplanation}
+          aria-controls="entropy-explainer"
+          aria-label="What is entropy"
+        >
+          <Info className="h-4 w-4" />
+        </button>
+      </div>
+
+      {showExplanation && (
+        <div
+          id="entropy-explainer"
+          className="mt-3 rounded-xl border border-cyan-300/30 bg-cyan-500/10 p-3 text-xs text-cyan-50"
+        >
+          <p>
+            Entropy is estimated with <strong>Entropy = L x log2(R)</strong>, where L is password length and R is the character pool.
+            Longer passwords and larger character pools increase resistance to brute-force attacks.
+          </p>
+          <p className="mt-2 text-cyan-100/90">
+            Crack-time estimates use average guesses needed and compare online, offline, and high-speed GPU attack rates.
+          </p>
+        </div>
+      )}
 
       <div className="mt-4 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
         <div
