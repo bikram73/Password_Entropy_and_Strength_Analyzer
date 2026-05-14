@@ -56,6 +56,24 @@ export const Home = () => {
 
   return (
     <main className="relative min-h-screen overflow-hidden bg-cyber-gradient px-4 pb-12 pt-8 text-white md:px-8 lg:px-12">
+      <div className="bg-grid" aria-hidden="true" />
+
+      <div className="binary-rain" aria-hidden="true">
+        {Array.from({ length: 52 }).map((_, index) => (
+          <span
+            key={`binary-${index}`}
+            className="binary-char"
+            style={{
+              left: `${Math.random() * 100}%`,
+              animationDuration: `${6 + Math.random() * 7}s`,
+              animationDelay: `${Math.random() * 5}s`,
+            }}
+          >
+            {Math.random() > 0.5 ? '1' : '0'}
+          </span>
+        ))}
+      </div>
+
       <div ref={particlesRef} className="pointer-events-none absolute inset-0" aria-hidden="true">
         {Array.from({ length: 20 }).map((_, index) => (
           <span

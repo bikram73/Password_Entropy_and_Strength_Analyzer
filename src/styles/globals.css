@@ -36,13 +36,13 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.12);
   background: rgba(255, 255, 255, 0.08);
   backdrop-filter: blur(20px);
-  box-shadow: 0 0 10px rgba(0, 245, 255, 0.22), 0 0 20px rgba(0, 245, 255, 0.12);
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  box-shadow: 0 0 15px rgba(0, 245, 255, 0.2), 0 0 30px rgba(0, 245, 255, 0.08);
+  transition: all 0.4s ease;
 }
 
 .glass-card:hover {
   transform: translateY(-3px);
-  box-shadow: 0 0 16px rgba(0, 245, 255, 0.35), 0 0 28px rgba(139, 92, 246, 0.2);
+  box-shadow: 0 0 22px rgba(0, 245, 255, 0.38), 0 0 40px rgba(139, 92, 246, 0.2);
 }
 
 .icon-btn {
@@ -55,7 +55,7 @@ body {
   border-radius: 0.6rem;
   background: rgba(2, 6, 23, 0.75);
   color: #d8f9ff;
-  transition: all 0.2s ease;
+  transition: all 0.35s ease;
 }
 
 .icon-btn:hover,
@@ -66,11 +66,50 @@ body {
 
 .focus-ring:focus-visible {
   border-color: rgba(0, 245, 255, 0.9);
-  box-shadow: 0 0 0 2px rgba(0, 245, 255, 0.25);
+  box-shadow: 0 0 0 2px rgba(0, 245, 255, 0.25), 0 0 15px #00f5ff;
+}
+
+.password-field {
+  background-image: linear-gradient(120deg, rgba(0, 245, 255, 0.08), rgba(139, 92, 246, 0.06));
+  transition: all 0.4s ease;
+}
+
+.password-field:focus {
+  box-shadow: 0 0 15px #00f5ff;
 }
 
 .bg-cyber-gradient {
   background: linear-gradient(135deg, #050816, #0f172a, #111827);
+}
+
+.bg-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.32;
+  background-image:
+    linear-gradient(rgba(0, 245, 255, 0.14) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 245, 255, 0.12) 1px, transparent 1px);
+  background-size: 64px 64px;
+  animation: grid-drift 20s linear infinite;
+}
+
+.binary-rain {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0.35;
+}
+
+.binary-char {
+  position: absolute;
+  top: -20px;
+  font-family: 'JetBrains Mono', monospace;
+  color: rgba(0, 245, 255, 0.45);
+  font-size: 11px;
+  text-shadow: 0 0 10px rgba(0, 245, 255, 0.55);
+  animation: binary-fall linear infinite;
 }
 
 .bg-particle {
@@ -117,6 +156,32 @@ body {
   display: grid;
   place-items: center;
   box-shadow: 0 0 20px rgba(0, 245, 255, 0.25);
+}
+
+.strength-fill {
+  transition: all 0.4s ease;
+}
+
+.strength-fill-pulse {
+  animation: neon-pulse 1.7s ease-in-out infinite;
+}
+
+.tier-badge {
+  transition: all 0.4s ease;
+}
+
+.tier-impact {
+  transform: scale(1.07);
+  animation: tier-pulse 1.5s ease-in-out infinite;
+}
+
+.tier-chip {
+  transition: all 0.35s ease;
+}
+
+.tier-chip-impact {
+  transform: scale(1.08);
+  box-shadow: 0 0 16px rgba(139, 92, 246, 0.35);
 }
 
 .entropy-core {
@@ -179,11 +244,58 @@ body {
   font-size: 0.75rem;
 }
 
+@keyframes grid-drift {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(64px);
+  }
+}
+
+@keyframes binary-fall {
+  from {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  to {
+    transform: translateY(105vh);
+    opacity: 0;
+  }
+}
+
+@keyframes neon-pulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 6px rgba(0, 245, 255, 0.35));
+  }
+  50% {
+    filter: drop-shadow(0 0 14px rgba(0, 245, 255, 0.8));
+  }
+}
+
+@keyframes tier-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 0 rgba(139, 92, 246, 0);
+  }
+  50% {
+    box-shadow: 0 0 18px rgba(139, 92, 246, 0.6);
+  }
+}
+
 @media (max-width: 640px) {
   .typewriter {
     white-space: normal;
     border-right: 0;
     width: 100%;
     animation: none;
+  }
+
+  .binary-char {
+    font-size: 9px;
   }
 }

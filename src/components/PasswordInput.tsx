@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Copy, Eye, EyeOff, RefreshCw, ShieldEllipsis } from 'lucide-react'
+import { Copy, Eye, EyeOff, KeyRound, RefreshCw, ShieldEllipsis } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 type PasswordInputProps = {
@@ -44,6 +44,10 @@ export const PasswordInput = ({ value, onChange }: PasswordInputProps) => {
       </label>
 
       <div className="relative">
+        <KeyRound
+          className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-cyan-300/80"
+          aria-hidden="true"
+        />
         <input
           id="password-field"
           aria-label="Password field"
@@ -51,10 +55,10 @@ export const PasswordInput = ({ value, onChange }: PasswordInputProps) => {
           value={value}
           onChange={(event) => onChange(event.target.value)}
           placeholder="Type your password here..."
-          className="focus-ring w-full rounded-xl border border-white/15 bg-slate-950/70 px-4 py-4 pr-36 text-base text-white outline-none transition md:text-lg"
+          className="password-field focus-ring w-full rounded-xl border border-white/15 bg-slate-950/70 py-4 pl-12 pr-36 text-base text-white outline-none md:text-lg"
         />
 
-        <div className="absolute inset-y-0 right-2 flex items-center gap-2">
+        <div className="absolute inset-y-0 right-2 flex items-center gap-1.5 sm:gap-2">
           <button
             type="button"
             aria-label={visible ? 'Hide password' : 'Show password'}
