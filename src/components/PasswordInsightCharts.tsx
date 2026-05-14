@@ -59,36 +59,42 @@ export const PasswordInsightCharts = ({ analysis }: PasswordInsightChartsProps) 
     },
   ]
 
-  const riskData = [
-    {
-      name: 'Secure Signals',
-      value: [
-        analysis.checks.hasLowercase,
-        analysis.checks.hasUppercase,
-        analysis.checks.hasNumbers,
-        analysis.checks.hasSymbols,
-        !analysis.checks.hasSequential,
-        !analysis.checks.hasRepeating,
-        !analysis.checks.hasDictionaryWord,
-        !analysis.checks.isCommonPassword,
-      ].filter(Boolean).length,
-      fill: '#22C55E',
-    },
-    {
-      name: 'Risk Signals',
-      value: [
-        !analysis.checks.hasLowercase,
-        !analysis.checks.hasUppercase,
-        !analysis.checks.hasNumbers,
-        !analysis.checks.hasSymbols,
-        analysis.checks.hasSequential,
-        analysis.checks.hasRepeating,
-        analysis.checks.hasDictionaryWord,
-        analysis.checks.isCommonPassword,
-      ].filter(Boolean).length,
-      fill: '#EF4444',
-    },
-  ]
+  const riskData =
+    password.length === 0
+      ? [
+          { name: 'Secure Signals', value: 0, fill: '#22C55E' },
+          { name: 'Risk Signals', value: 0, fill: '#EF4444' },
+        ]
+      : [
+          {
+            name: 'Secure Signals',
+            value: [
+              analysis.checks.hasLowercase,
+              analysis.checks.hasUppercase,
+              analysis.checks.hasNumbers,
+              analysis.checks.hasSymbols,
+              !analysis.checks.hasSequential,
+              !analysis.checks.hasRepeating,
+              !analysis.checks.hasDictionaryWord,
+              !analysis.checks.isCommonPassword,
+            ].filter(Boolean).length,
+            fill: '#22C55E',
+          },
+          {
+            name: 'Risk Signals',
+            value: [
+              !analysis.checks.hasLowercase,
+              !analysis.checks.hasUppercase,
+              !analysis.checks.hasNumbers,
+              !analysis.checks.hasSymbols,
+              analysis.checks.hasSequential,
+              analysis.checks.hasRepeating,
+              analysis.checks.hasDictionaryWord,
+              analysis.checks.isCommonPassword,
+            ].filter(Boolean).length,
+            fill: '#EF4444',
+          },
+        ]
 
   return (
     <motion.section
