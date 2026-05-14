@@ -167,8 +167,8 @@ export const Home = () => {
             <CrackTimeCard crackTime={analysis.crackTime} />
           </div>
 
-          <EntropyGraph value={password} />
           <SuggestionsPanel analysis={analysis} />
+          <EntropyGraph value={password} />
         </section>
       </div>
     </main>
