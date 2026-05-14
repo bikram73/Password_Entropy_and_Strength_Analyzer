@@ -88,7 +88,7 @@ export const PasswordInsightCharts = ({ analysis }: PasswordInsightChartsProps) 
       aria-labelledby="insight-charts-title"
     >
       <h2 id="insight-charts-title" className="text-lg font-semibold text-cyan-200 md:text-xl">
-        Additional Security Charts
+        More Security Charts
       </h2>
       <p className="mt-1 text-xs text-slate-400">
         Character mix and risk profile visuals based on your current password input.
