@@ -15,6 +15,12 @@ type EntropyGraphProps = {
   value: string
 }
 
+type GraphPoint = {
+  step: number
+  entropy: number
+  passwordFragment: string
+}
+
 const getPoolSize = (text: string) => {
   let pool = 0
   if (/[a-z]/.test(text)) pool += 26
@@ -35,10 +41,27 @@ export const EntropyGraph = ({ value }: EntropyGraphProps) => {
         return {
           step: index + 1,
           entropy: Number(entropy.toFixed(2)),
+          passwordFragment: part,
         }
       }),
     [value],
   )
+
+  const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: Array<{ payload: GraphPoint }> }) => {
+    if (!active || !payload?.length) return null
+
+    const point = payload[0].payload
+
+    return (
+      <div className="rounded-xl border border-cyan-300/40 bg-slate-950/95 px-4 py-3 shadow-[0_0_20px_rgba(0,245,255,0.18)]">
+        <p className="text-[11px] uppercase tracking-[0.2em] text-cyan-300">Typing step {point.step}</p>
+        <p className="mt-1 font-mono text-sm text-white">
+          Password: <span className="text-cyan-200">{point.passwordFragment}</span>
+        </p>
+        <p className="mt-1 text-sm text-slate-200">Entropy: {point.entropy} bits</p>
+      </div>
+    )
+  }
 
   return (
     <motion.section
@@ -57,7 +80,7 @@ export const EntropyGraph = ({ value }: EntropyGraphProps) => {
 
       <div className="mt-4 h-52 w-full">
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={data.length ? data : [{ step: 0, entropy: 0 }]}> 
+          <LineChart data={data.length ? data : [{ step: 0, entropy: 0, passwordFragment: '' }]}> 
             <defs>
               <linearGradient id="entropyArea" x1="0" y1="0" x2="0" y2="1">
                 <stop offset="5%" stopColor="#00F5FF" stopOpacity={0.45} />
@@ -67,14 +90,7 @@ export const EntropyGraph = ({ value }: EntropyGraphProps) => {
             <CartesianGrid strokeDasharray="4 4" stroke="rgba(148,163,184,0.25)" />
             <XAxis dataKey="step" tick={{ fill: '#94A3B8', fontSize: 11 }} />
             <YAxis tick={{ fill: '#94A3B8', fontSize: 11 }} width={40} />
-            <Tooltip
-              contentStyle={{
-                background: '#0B1226',
-                border: '1px solid rgba(0,245,255,0.4)',
-                borderRadius: '10px',
-                color: '#fff',
-              }}
-            />
+            <Tooltip content={<CustomTooltip />} cursor={{ stroke: 'rgba(0,245,255,0.5)', strokeWidth: 1 }} />
             <Area
               type="monotone"
               dataKey="entropy"
