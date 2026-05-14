@@ -38,7 +38,7 @@ const getTone = (label: StrengthTier['label']) => {
         badge: 'border-emerald-300/80 bg-emerald-500/20 text-emerald-100',
         chip: 'border-emerald-300/90 bg-emerald-500/20 text-emerald-100',
       }
-    case 'God Level':
+    case 'Good Level':
       return {
         title: 'text-violet-300',
         badge: 'border-violet-300/80 bg-violet-500/20 text-violet-100',
@@ -55,7 +55,7 @@ const getTone = (label: StrengthTier['label']) => {
 
 export const StrengthMeter = ({ score, tier }: StrengthMeterProps) => {
   const tone = getTone(tier.label)
-  const isDramaticTier = tier.label === 'Very Weak' || tier.label === 'God Level'
+  const isDramaticTier = tier.label === 'Very Weak' || tier.label === 'Good Level'
 
   return (
     <motion.section
@@ -98,9 +98,9 @@ export const StrengthMeter = ({ score, tier }: StrengthMeterProps) => {
       </div>
 
       <div className="mt-5 grid grid-cols-2 gap-2 text-xs sm:grid-cols-3 md:grid-cols-6">
-        {['Very Weak', 'Weak', 'Moderate', 'Strong', 'Very Strong', 'God Level'].map((label) => {
+        {['Very Weak', 'Weak', 'Moderate', 'Strong', 'Very Strong', 'Good Level'].map((label) => {
           const active = tier.label === label
-          const dramatic = label === 'Very Weak' || label === 'God Level'
+          const dramatic = label === 'Very Weak' || label === 'Good Level'
 
           return (
             <span

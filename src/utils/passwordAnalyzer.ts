@@ -26,7 +26,7 @@ const DICTIONARY_TERMS = [
 ]
 
 export type StrengthTier = {
-  label: 'Very Weak' | 'Weak' | 'Moderate' | 'Strong' | 'Very Strong' | 'God Level'
+  label: 'Very Weak' | 'Weak' | 'Moderate' | 'Strong' | 'Very Strong' | 'Good Level'
   min: number
   max: number
   color: string
@@ -92,7 +92,7 @@ const TIERS: StrengthTier[] = [
     gradient: 'linear-gradient(90deg, #22C55E, #00F5FF)',
   },
   {
-    label: 'God Level',
+    label: 'Good Level',
     min: 96,
     max: 100,
     color: '#8B5CF6',

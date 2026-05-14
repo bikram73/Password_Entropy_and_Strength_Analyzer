@@ -12,8 +12,8 @@ import { analyzePassword } from '../utils/passwordAnalyzer'
 const heroMessages = [
   'Check how secure your password really is in seconds, with live entropy scoring and crack-time estimates.',
   'See exactly how uppercase letters, numbers, symbols, and length change your password strength in real time.',
-  'Spot weak patterns early, improve your password instantly, and aim for God Level protection.',
-  'Built for fast, clear security feedback with animated visuals, smart suggestions, and cyber-style depth.',
+  'Spot weak patterns early, improve your password instantly, and aim for Good Level protection.',
+  'Built for the fast, clear security feedback with animated visuals, smart suggestions, and cyber-style depth.',
 ]
 
 export const Home = () => {

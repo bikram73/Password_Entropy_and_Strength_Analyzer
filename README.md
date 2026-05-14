@@ -9,7 +9,7 @@ SecurePass AI is a cybersecurity utility web app built to help users understand 
 It analyzes password quality in real time and shows:
 
 - 🔢 Entropy score
-- 🧠 Strength rating from Very Weak to God Level
+- 🧠 Strength rating from Very Weak to Good Level
 - ⏱️ Estimated crack time for online, offline, and GPU attacks
 - ✅ Improvement suggestions based on weaknesses
 - 📈 Live entropy growth graph while typing
