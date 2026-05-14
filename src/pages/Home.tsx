@@ -7,6 +7,7 @@ import { EntropyCard } from '../components/EntropyCard'
 import { CrackTimeCard } from '../components/CrackTimeCard'
 import { SuggestionsPanel } from '../components/SuggestionsPanel'
 import { EntropyGraph } from '../components/EntropyGraph'
+import { PasswordInsightCharts } from '../components/PasswordInsightCharts'
 import { analyzePassword } from '../utils/passwordAnalyzer'
 
 const heroMessages = [
@@ -169,6 +170,7 @@ export const Home = () => {
 
           <SuggestionsPanel analysis={analysis} />
           <EntropyGraph value={password} />
+          <PasswordInsightCharts analysis={analysis} />
         </section>
       </div>
     </main>
