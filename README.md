@@ -1,4 +1,4 @@
-# Password Entropy and Strength Analyzer (SecurePass AI)
+# 🔐🗝️ Password Entropy and Strength Analyzer (SecurePass AI)
 
 > 🔐 Futuristic password entropy and strength analyzer with real-time scoring, animated cyber visuals, and smart security guidance.
 
