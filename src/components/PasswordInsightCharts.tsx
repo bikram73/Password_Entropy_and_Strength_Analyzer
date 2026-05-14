@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import {
   Bar,
@@ -24,6 +25,16 @@ const countMatches = (value: string, pattern: RegExp) => {
 
 export const PasswordInsightCharts = ({ analysis }: PasswordInsightChartsProps) => {
   const password = analysis.password
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const updateViewport = () => setIsMobile(window.innerWidth < 640)
+
+    updateViewport()
+    window.addEventListener('resize', updateViewport)
+
+    return () => window.removeEventListener('resize', updateViewport)
+  }, [])
 
   const compositionData = [
     {
@@ -81,7 +92,7 @@ export const PasswordInsightCharts = ({ analysis }: PasswordInsightChartsProps) 
 
   return (
     <motion.section
-      className="glass-card p-5 md:p-7"
+      className="glass-card p-4 sm:p-5 md:p-7"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.45, delay: 0.2 }}
@@ -95,14 +106,26 @@ export const PasswordInsightCharts = ({ analysis }: PasswordInsightChartsProps) 
       </p>
 
       <div className="mt-4 grid gap-4 lg:grid-cols-2">
-        <div className="rounded-xl border border-white/10 bg-slate-900/40 p-3">
-          <h3 className="mb-3 text-sm uppercase tracking-[0.16em] text-slate-300">Character Composition</h3>
-          <div className="h-56 w-full">
+        <div className="rounded-xl border border-white/10 bg-slate-900/40 p-3 sm:p-4">
+          <h3 className="mb-3 text-sm uppercase tracking-[0.16em] text-slate-300">
+            Character Composition
+          </h3>
+          <div className={isMobile ? 'h-52 w-full' : 'h-56 w-full'}>
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={compositionData} barSize={28}>
+              <BarChart data={compositionData} barSize={isMobile ? 16 : 28} margin={{ top: 8, right: 8, left: 0, bottom: 8 }}>
                 <CartesianGrid strokeDasharray="4 4" stroke="rgba(148,163,184,0.22)" />
-                <XAxis dataKey="name" tick={{ fill: '#94A3B8', fontSize: 11 }} />
-                <YAxis allowDecimals={false} tick={{ fill: '#94A3B8', fontSize: 11 }} />
+                <XAxis
+                  dataKey="name"
+                  tick={{ fill: '#94A3B8', fontSize: isMobile ? 9 : 11 }}
+                  tickFormatter={(value) =>
+                    isMobile
+                      ? String(value).slice(0, 3)
+                      : String(value)
+                  }
+                  interval={0}
+                  height={isMobile ? 42 : 30}
+                />
+                <YAxis allowDecimals={false} tick={{ fill: '#94A3B8', fontSize: isMobile ? 9 : 11 }} width={isMobile ? 26 : 38} />
                 <Tooltip
                   contentStyle={{
                     background: '#0B1226',
@@ -121,9 +144,11 @@ export const PasswordInsightCharts = ({ analysis }: PasswordInsightChartsProps) 
           </div>
         </div>
 
-        <div className="rounded-xl border border-white/10 bg-slate-900/40 p-3">
-          <h3 className="mb-3 text-sm uppercase tracking-[0.16em] text-slate-300">Risk Signal Breakdown</h3>
-          <div className="h-56 w-full">
+        <div className="rounded-xl border border-white/10 bg-slate-900/40 p-3 sm:p-4">
+          <h3 className="mb-3 text-sm uppercase tracking-[0.16em] text-slate-300">
+            Risk Signal Breakdown
+          </h3>
+          <div className={isMobile ? 'h-52 w-full' : 'h-56 w-full'}>
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -132,8 +157,8 @@ export const PasswordInsightCharts = ({ analysis }: PasswordInsightChartsProps) 
                   nameKey="name"
                   cx="50%"
                   cy="50%"
-                  innerRadius={52}
-                  outerRadius={84}
+                  innerRadius={isMobile ? 40 : 52}
+                  outerRadius={isMobile ? 68 : 84}
                   paddingAngle={3}
                   stroke="rgba(15,23,42,0.8)"
                   strokeWidth={2}
@@ -159,11 +184,16 @@ export const PasswordInsightCharts = ({ analysis }: PasswordInsightChartsProps) 
             </ResponsiveContainer>
           </div>
 
-          <div className="mt-2 grid grid-cols-2 gap-2 text-xs">
+          <div className="mt-2 grid grid-cols-1 gap-2 text-xs sm:grid-cols-2">
             {riskData.map((entry) => (
-              <div key={entry.name} className="flex items-center gap-2 rounded-lg bg-slate-950/50 px-3 py-2 text-slate-300">
+              <div
+                key={entry.name}
+                className="flex items-center gap-2 rounded-lg bg-slate-950/50 px-3 py-2 text-slate-300"
+              >
                 <span className="h-2.5 w-2.5 rounded-full" style={{ backgroundColor: entry.fill }} />
-                <span>{entry.name}: {entry.value}</span>
+                <span>
+                  {isMobile ? entry.name.replace(' Signals', '') : entry.name}: {entry.value}
+                </span>
               </div>
             ))}
           </div>
