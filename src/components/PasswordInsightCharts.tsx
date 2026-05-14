@@ -101,7 +101,7 @@ export const PasswordInsightCharts = ({ analysis }: PasswordInsightChartsProps) 
       className="glass-card p-4 sm:p-5 md:p-7"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.45, delay: 0.2 }}
+      transition={{ duration: 0.45, delay: 0.05 }}
       aria-labelledby="insight-charts-title"
     >
       <h2 id="insight-charts-title" className="text-lg font-semibold text-cyan-200 md:text-xl">
@@ -139,8 +139,10 @@ export const PasswordInsightCharts = ({ analysis }: PasswordInsightChartsProps) 
                     borderRadius: '10px',
                     color: '#fff',
                   }}
+                  itemStyle={{ color: '#fff' }}
+                  cursor={{ fill: 'rgba(148,163,184,0.1)' }}
                 />
-                <Bar dataKey="count" radius={[8, 8, 0, 0]}>
+                <Bar dataKey="count" radius={[8, 8, 0, 0]} isAnimationActive animationDuration={400}>
                   {compositionData.map((entry) => (
                     <Cell key={entry.name} fill={entry.fill} />
                   ))}
@@ -169,6 +171,7 @@ export const PasswordInsightCharts = ({ analysis }: PasswordInsightChartsProps) 
                   stroke="rgba(15,23,42,0.8)"
                   strokeWidth={2}
                   isAnimationActive
+                  animationDuration={400}
                 >
                   {riskData.map((entry) => (
                     <Cell key={entry.name} fill={entry.fill} />
@@ -185,6 +188,7 @@ export const PasswordInsightCharts = ({ analysis }: PasswordInsightChartsProps) 
                     borderRadius: '10px',
                     color: '#fff',
                   }}
+                  itemStyle={{ color: '#fff' }}
                 />
               </PieChart>
             </ResponsiveContainer>
