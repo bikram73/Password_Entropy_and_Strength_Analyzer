@@ -193,9 +193,10 @@ const buildScore = (password: string, entropy: number, practicalScore: number): 
   if (dictionaryDetected) score -= 6
 
   if (numericOnly && !sequence && !repeating && !common) {
-    if (entropy >= 180) score = Math.max(score, 92)
-    else if (entropy >= 120) score = Math.max(score, 80)
-    else if (entropy >= 60) score = Math.max(score, 55)
+    if (entropy >= 300) score = Math.max(score, 97)
+    else if (entropy >= 180) score = Math.max(score, 96)
+    else if (entropy >= 120) score = Math.max(score, 82)
+    else if (entropy >= 60) score = Math.max(score, 60)
   }
 
   if (password.length === 0) return 0
