@@ -21,6 +21,11 @@ type GraphPoint = {
   passwordFragment: string
 }
 
+type CustomTooltipProps = {
+  active?: boolean
+  payload?: Array<{ payload: GraphPoint }>
+}
+
 const getPoolSize = (text: string) => {
   let pool = 0
   if (/[a-z]/.test(text)) pool += 26
@@ -28,6 +33,22 @@ const getPoolSize = (text: string) => {
   if (/\d/.test(text)) pool += 10
   if (/[^A-Za-z0-9]/.test(text)) pool += 32
   return pool
+}
+
+const CustomTooltip = ({ active, payload }: CustomTooltipProps) => {
+  if (!active || !payload?.length) return null
+
+  const point = payload[0].payload
+
+  return (
+    <div className="rounded-xl border border-cyan-300/40 bg-slate-950/95 px-4 py-3 shadow-[0_0_20px_rgba(0,245,255,0.18)]">
+      <p className="text-[11px] uppercase tracking-[0.2em] text-cyan-300">Typing step {point.step}</p>
+      <p className="mt-1 font-mono text-sm text-white">
+        Password: <span className="text-cyan-200">{point.passwordFragment}</span>
+      </p>
+      <p className="mt-1 text-sm text-slate-200">Entropy: {point.entropy} bits</p>
+    </div>
+  )
 }
 
 export const EntropyGraph = ({ value }: EntropyGraphProps) => {
@@ -46,22 +67,6 @@ export const EntropyGraph = ({ value }: EntropyGraphProps) => {
       }),
     [value],
   )
-
-  const CustomTooltip = ({ active, payload }: { active?: boolean; payload?: Array<{ payload: GraphPoint }> }) => {
-    if (!active || !payload?.length) return null
-
-    const point = payload[0].payload
-
-    return (
-      <div className="rounded-xl border border-cyan-300/40 bg-slate-950/95 px-4 py-3 shadow-[0_0_20px_rgba(0,245,255,0.18)]">
-        <p className="text-[11px] uppercase tracking-[0.2em] text-cyan-300">Typing step {point.step}</p>
-        <p className="mt-1 font-mono text-sm text-white">
-          Password: <span className="text-cyan-200">{point.passwordFragment}</span>
-        </p>
-        <p className="mt-1 text-sm text-slate-200">Entropy: {point.entropy} bits</p>
-      </div>
-    )
-  }
 
   return (
     <motion.section

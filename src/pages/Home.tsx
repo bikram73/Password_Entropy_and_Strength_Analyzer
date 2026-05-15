@@ -17,6 +17,23 @@ const heroMessages = [
   'Built for the fast, clear security feedback with animated visuals, smart suggestions, and cyber-style depth.',
 ]
 
+const createBinaryChars = (count: number) =>
+  Array.from({ length: count }, () => ({
+    left: `${Math.random() * 100}%`,
+    animationDuration: `${6 + Math.random() * 7}s`,
+    animationDelay: `${Math.random() * 5}s`,
+    value: Math.random() > 0.5 ? '1' : '0',
+  }))
+
+const createFloatingParticles = (count: number) =>
+  Array.from({ length: count }, () => ({
+    top: `${Math.random() * 95}%`,
+    left: `${Math.random() * 95}%`,
+  }))
+
+const binaryChars = createBinaryChars(52)
+const floatingParticles = createFloatingParticles(20)
+
 export const Home = () => {
   const [password, setPassword] = useState('')
   const [heroMessageIndex, setHeroMessageIndex] = useState(0)
@@ -38,9 +55,12 @@ export const Home = () => {
     }
 
     if (isDeleting && heroText === '') {
-      setIsDeleting(false)
-      setHeroMessageIndex((current) => (current + 1) % heroMessages.length)
-      return undefined
+      const restartTimer = window.setTimeout(() => {
+        setIsDeleting(false)
+        setHeroMessageIndex((current) => (current + 1) % heroMessages.length)
+      }, 0)
+
+      return () => window.clearTimeout(restartTimer)
     }
 
     const timer = window.setTimeout(() => {
@@ -95,29 +115,29 @@ export const Home = () => {
       <div className="bg-grid" aria-hidden="true" />
 
       <div className="binary-rain" aria-hidden="true">
-        {Array.from({ length: 52 }).map((_, index) => (
+        {binaryChars.map((character, index) => (
           <span
             key={`binary-${index}`}
             className="binary-char"
             style={{
-              left: `${Math.random() * 100}%`,
-              animationDuration: `${6 + Math.random() * 7}s`,
-              animationDelay: `${Math.random() * 5}s`,
+              left: character.left,
+              animationDuration: character.animationDuration,
+              animationDelay: character.animationDelay,
             }}
           >
-            {Math.random() > 0.5 ? '1' : '0'}
+            {character.value}
           </span>
         ))}
       </div>
 
       <div ref={particlesRef} className="pointer-events-none absolute inset-0" aria-hidden="true">
-        {Array.from({ length: 20 }).map((_, index) => (
+        {floatingParticles.map((particle, index) => (
           <span
             key={`particle-${index}`}
             className="bg-particle"
             style={{
-              top: `${Math.random() * 95}%`,
-              left: `${Math.random() * 95}%`,
+              top: particle.top,
+              left: particle.left,
               animationDelay: `${index * 120}ms`,
             }}
           />

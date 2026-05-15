@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Info } from 'lucide-react'
 import { motion } from 'framer-motion'
 
@@ -11,10 +11,15 @@ type EntropyCardProps = {
 
 const useAnimatedNumber = (value: number, durationMs = 550) => {
   const [displayValue, setDisplayValue] = useState(0)
+  const displayValueRef = useRef(displayValue)
+
+  useEffect(() => {
+    displayValueRef.current = displayValue
+  }, [displayValue])
 
   useEffect(() => {
     const start = performance.now()
-    const initial = displayValue
+    const initial = displayValueRef.current
     let frame = 0
 
     const animate = (timestamp: number) => {
@@ -32,7 +37,7 @@ const useAnimatedNumber = (value: number, durationMs = 550) => {
 
     frame = requestAnimationFrame(animate)
     return () => cancelAnimationFrame(frame)
-  }, [value])
+  }, [value, durationMs])
 
   return displayValue
 }

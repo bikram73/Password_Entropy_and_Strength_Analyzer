@@ -1,5 +1,6 @@
 import { calculateEntropy, getCharacterPoolSize, getCharacterSetUsage } from './entropyCalculator'
 import { estimateCrackTimes, type CrackTimeEstimate } from './crackTimeEstimator'
+import zxcvbn from 'zxcvbn'
 
 const COMMON_PASSWORDS = new Set([
   'password',
@@ -36,6 +37,12 @@ export type StrengthTier = {
 export type PasswordAnalysis = {
   password: string
   score: number
+  practicalScore: number
+  practicalLabel: 'Very Weak' | 'Weak' | 'Moderate' | 'Strong' | 'Very Strong'
+  practicalGuesses: number
+  practicalCrackTime: string
+  practicalWarning: string
+  practicalSuggestions: string[]
   entropy: number
   length: number
   poolSize: number
@@ -133,30 +140,54 @@ const hasDictionaryWord = (value: string): boolean => {
   return DICTIONARY_TERMS.some((word) => normalized.includes(word))
 }
 
-const buildScore = (password: string, entropy: number): number => {
+type ZxcvbnResultLike = {
+  score: number
+  guesses: number
+  crack_times_display: {
+    offline_fast_hashing_1e10_per_second: string
+  }
+  feedback: {
+    warning: string
+    suggestions: string[]
+  }
+}
+
+const practicalLabels: Array<PasswordAnalysis['practicalLabel']> = [
+  'Very Weak',
+  'Weak',
+  'Moderate',
+  'Strong',
+  'Very Strong',
+]
+
+const entropyStrengthScore = (entropy: number): number => {
+  if (entropy <= 0) return 0
+
+  const normalized = 100 * (1 - Math.exp(-entropy / 90))
+  return Math.max(0, Math.min(100, Math.round(normalized)))
+}
+
+const buildScore = (password: string, entropy: number, practicalScore: number): number => {
   const usage = getCharacterSetUsage(password)
+  const entropyScore = entropyStrengthScore(entropy)
+  const varietyCount = [usage.hasLowercase, usage.hasUppercase, usage.hasNumbers, usage.hasSymbols].filter(Boolean).length
 
-  let score = 0
+  let score = Math.round(entropyScore * 0.9 + practicalScore * 0.1)
 
-  if (password.length >= 12) score += 25
-  else if (password.length >= 8) score += 12
+  if (password.length >= 24) score += 2
+  else if (password.length >= 16) score += 1
 
-  if (usage.hasUppercase) score += 10
-  if (usage.hasLowercase) score += 10
-  if (usage.hasNumbers) score += 10
-  if (usage.hasSymbols) score += 15
+  if (varietyCount === 4 && entropyScore >= 70) score += 1
 
   const repeating = containsRepeatingPattern(password)
   const sequence = containsSequence(password)
   const common = COMMON_PASSWORDS.has(password.toLowerCase())
+  const dictionaryDetected = hasDictionaryWord(password)
 
-  if (!repeating) score += 10
-  if (entropy >= 60) score += 20
-  else if (entropy >= 40) score += 12
-
-  if (common) score -= 40
-  if (sequence) score -= 20
-  if (repeating) score -= 15
+  if (common) score -= 18
+  if (sequence) score -= 10
+  if (repeating) score -= 8
+  if (dictionaryDetected) score -= 6
 
   if (password.length === 0) return 0
 
@@ -167,13 +198,18 @@ export const analyzePassword = (password: string): PasswordAnalysis => {
   const entropy = calculateEntropy(password)
   const poolSize = getCharacterPoolSize(password)
   const charUsage = getCharacterSetUsage(password)
+  const zxcvbnResult = zxcvbn(password) as ZxcvbnResultLike
 
   const hasSequential = containsSequence(password)
   const hasRepeating = containsRepeatingPattern(password)
   const isCommonPassword = COMMON_PASSWORDS.has(password.toLowerCase())
   const dictionaryDetected = hasDictionaryWord(password)
 
-  const score = buildScore(password, entropy)
+  const practicalScore = Math.round((zxcvbnResult.score / 4) * 100)
+  const practicalLabel = practicalLabels[zxcvbnResult.score] ?? practicalLabels[0]
+  const practicalSuggestions = zxcvbnResult.feedback.suggestions.filter(Boolean)
+
+  const score = buildScore(password, entropy, practicalScore)
   const tier = findTier(score)
   const crackTime = estimateCrackTimes(poolSize, password.length)
 
@@ -189,6 +225,10 @@ export const analyzePassword = (password: string): PasswordAnalysis => {
   if (hasSequential) suggestions.push('Avoid sequential patterns such as abcde or 12345.')
   if (dictionaryDetected) suggestions.push('Avoid dictionary words and obvious phrases.')
   if (isCommonPassword) suggestions.push('This password is commonly used and unsafe.')
+  if (zxcvbnResult.feedback.warning) suggestions.push(zxcvbnResult.feedback.warning)
+  if (practicalSuggestions.length) {
+    suggestions.push(...practicalSuggestions.map((tip) => `zxcvbn: ${tip}`))
+  }
 
   if (!password.length) {
     aiSuggestions.push('Start with a memorable passphrase and then add symbols and numbers.')
@@ -201,9 +241,19 @@ export const analyzePassword = (password: string): PasswordAnalysis => {
     aiSuggestions.push('Excellent password security profile.')
   }
 
+  if (practicalScore < score) {
+    aiSuggestions.push('zxcvbn flags a more realistic strength drop than raw entropy alone suggests.')
+  }
+
   return {
     password,
     score,
+    practicalScore,
+    practicalLabel,
+    practicalGuesses: zxcvbnResult.guesses,
+    practicalCrackTime: zxcvbnResult.crack_times_display.offline_fast_hashing_1e10_per_second,
+    practicalWarning: zxcvbnResult.feedback.warning,
+    practicalSuggestions,
     entropy,
     length: password.length,
     poolSize,
