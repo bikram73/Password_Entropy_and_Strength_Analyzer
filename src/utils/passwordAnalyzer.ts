@@ -140,6 +140,8 @@ const hasDictionaryWord = (value: string): boolean => {
   return DICTIONARY_TERMS.some((word) => normalized.includes(word))
 }
 
+const isNumericOnly = (value: string): boolean => /^\d+$/.test(value)
+
 type ZxcvbnResultLike = {
   score: number
   guesses: number
@@ -171,6 +173,7 @@ const buildScore = (password: string, entropy: number, practicalScore: number): 
   const usage = getCharacterSetUsage(password)
   const entropyScore = entropyStrengthScore(entropy)
   const varietyCount = [usage.hasLowercase, usage.hasUppercase, usage.hasNumbers, usage.hasSymbols].filter(Boolean).length
+  const numericOnly = isNumericOnly(password)
 
   let score = Math.round(entropyScore * 0.9 + practicalScore * 0.1)
 
@@ -188,6 +191,12 @@ const buildScore = (password: string, entropy: number, practicalScore: number): 
   if (sequence) score -= 10
   if (repeating) score -= 8
   if (dictionaryDetected) score -= 6
+
+  if (numericOnly && !sequence && !repeating && !common) {
+    if (entropy >= 180) score = Math.max(score, 92)
+    else if (entropy >= 120) score = Math.max(score, 80)
+    else if (entropy >= 60) score = Math.max(score, 55)
+  }
 
   if (password.length === 0) return 0
 
